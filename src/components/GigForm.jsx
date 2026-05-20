@@ -93,11 +93,11 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
           </div>
           <div>
             <label className={LABEL}>Gross Amount (₱)</label>
-            <input type="number" step="0.01" className={INPUT} value={form.gross} onChange={set('gross')} placeholder="e.g. 14000" />
+            <input type="number" step="0.01" inputMode="decimal" className={INPUT} value={form.gross} onChange={set('gross')} placeholder="e.g. 14000" />
           </div>
           <div>
             <label className={LABEL}>Net Amount on PO (₱)</label>
-            <input type="number" step="0.01" className={INPUT} value={form.net} onChange={set('net')} placeholder="e.g. 13465" />
+            <input type="number" step="0.01" inputMode="decimal" className={INPUT} value={form.net} onChange={set('net')} placeholder="e.g. 13465" />
           </div>
           {form.gross && form.net && (
             <div className="bg-[#1D9E75]/8 border border-[#1D9E75]/20 rounded-xl p-4 flex gap-4">
@@ -141,7 +141,7 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
           </div>
           <div>
             <label className={LABEL}>Actual Net Received (₱)</label>
-            <input type="number" step="0.01" className={INPUT} value={form.actualNet} onChange={set('actualNet')} placeholder="Amount deposited" />
+            <input type="number" step="0.01" inputMode="decimal" className={INPUT} value={form.actualNet} onChange={set('actualNet')} placeholder="Amount deposited" />
           </div>
         </div>
       )}
