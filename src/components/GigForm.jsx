@@ -47,10 +47,16 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
 
   const { amount: whtAmount, rate: whtRate } = wht(form.gross, form.net);
 
+  function detectStage(f) {
+    if (f.paymentDate || f.ref2303 || f.actualNet) return 'paid';
+    if (f.receiptNumber || f.receiptDate) return 'receipt';
+    if (f.poNumber || f.gross || f.net) return 'po';
+    return 'gig';
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    const savedStage = advanceFrom ? activeTab : form.stage;
-    onSave({ ...form, stage: savedStage });
+    onSave({ ...form, stage: detectStage(form) });
   }
 
   const tabStages = advanceFrom
@@ -175,7 +181,7 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
           type="submit"
           className="flex-1 py-3 rounded-xl bg-[#1D9E75] text-white text-sm font-semibold min-h-[44px] active:opacity-90"
         >
-          {advanceFrom ? `Advance to ${STAGE_LABELS[activeTab]}` : 'Save Gig'}
+          Save
         </button>
       </div>
     </form>
