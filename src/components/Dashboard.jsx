@@ -122,7 +122,8 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       {/* FAB — positioned relative to the max-width container */}
       <button
         onClick={onAdd}
-        className="fixed bottom-20 right-6 w-14 h-14 rounded-full bg-[#1D9E75] text-white text-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-20"
+        className="fixed right-6 w-14 h-14 rounded-full bg-[#1D9E75] text-white text-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-20"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 80px)' }}
         aria-label="Add gig"
       >
         +
