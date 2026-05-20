@@ -77,7 +77,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       </div>
 
       {/* Gig list */}
-      <div className="flex-1 p-4 flex flex-col gap-2 pb-24">
+      <div className="flex-1 p-4 flex flex-col gap-2 pb-32">
         {sorted.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
             <span className="text-5xl">🎵</span>
@@ -122,7 +122,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       {/* FAB — positioned relative to the max-width container */}
       <button
         onClick={onAdd}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#1D9E75] text-white text-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-20"
+        className="fixed bottom-20 right-6 w-14 h-14 rounded-full bg-[#1D9E75] text-white text-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-20"
         aria-label="Add gig"
       >
         +

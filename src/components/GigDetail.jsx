@@ -91,6 +91,7 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
           <Field label="Client" value={gig.client} />
           <Field label="Venue" value={gig.venue} />
           <Field label="Gig Date" value={formatDate(gig.date)} />
+          <Field label="Quarter" value={gig.quarter} />
           <Field label="Notes" value={gig.notes} />
         </div>
 

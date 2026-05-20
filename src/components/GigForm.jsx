@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { wht, peso } from '../utils/format.js';
+import { wht, peso, getQuarter } from '../utils/format.js';
 
 const STAGES = ['gig', 'po', 'receipt', 'paid'];
 const STAGE_LABELS = { gig: 'Gig Done', po: 'PO Received', receipt: 'Receipt Sent', paid: 'Paid' };
@@ -18,6 +18,7 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
     client: initial.client || '',
     venue: initial.venue || '',
     date: initial.date || '',
+    quarter: initial.quarter || getQuarter(initial.date) || '',
     notes: initial.notes || '',
     poNumber: initial.poNumber || '',
     gross: initial.gross || '',
@@ -31,11 +32,19 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
+  function handleDateChange(e) {
+    const newDate = e.target.value;
+    setForm((f) => ({
+      ...f,
+      date: newDate,
+      quarter: getQuarter(newDate) || f.quarter,
+    }));
+  }
+
   const { amount: whtAmount, rate: whtRate } = wht(form.gross, form.net);
 
   function handleSubmit(e) {
     e.preventDefault();
-    // When advancing, set stage to the activeTab (the next stage)
     const savedStage = advanceFrom ? activeTab : form.stage;
     onSave({ ...form, stage: savedStage });
   }
@@ -75,7 +84,11 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
           </div>
           <div>
             <label className={LABEL}>Gig Date *</label>
-            <input type="date" className={INPUT} value={form.date} onChange={set('date')} required />
+            <input type="date" className={INPUT} value={form.date} onChange={handleDateChange} required />
+          </div>
+          <div>
+            <label className={LABEL}>Quarter</label>
+            <input className={INPUT} value={form.quarter} onChange={set('quarter')} placeholder="e.g. Q1 2026" />
           </div>
           <div>
             <label className={LABEL}>Notes</label>

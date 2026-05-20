@@ -1,3 +1,5 @@
+import { getQuarter } from './format.js';
+
 const KEY = 'gig-tracker-ph-gigs';
 
 export function loadGigs() {
@@ -14,6 +16,7 @@ export function saveGigs(gigs) {
 }
 
 export function createGig(data) {
+  const quarter = data.quarter || getQuarter(data.date) || '';
   return {
     id: crypto.randomUUID(),
     stage: 'gig',
@@ -21,6 +24,7 @@ export function createGig(data) {
     venue: '',
     date: '',
     notes: '',
+    quarter: '',
     poNumber: '',
     gross: '',
     net: '',
@@ -30,6 +34,7 @@ export function createGig(data) {
     ref2303: '',
     actualNet: '',
     ...data,
+    quarter,
     createdAt: new Date().toISOString(),
   };
 }
