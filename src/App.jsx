@@ -110,7 +110,7 @@ export default function App() {
 
         {/* Bottom Navigation */}
         {isMain && (
-          <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 flex z-30" style={{ paddingBottom: '20px' }}>
+          <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 flex z-30">
             {NAV.map((n) => (
               <button
                 key={n.id}
