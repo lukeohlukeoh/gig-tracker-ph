@@ -33,10 +33,14 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   function handleDateChange(e) {
+    setForm((f) => ({ ...f, date: e.target.value }));
+  }
+
+  function handlePaymentDateChange(e) {
     const newDate = e.target.value;
     setForm((f) => ({
       ...f,
-      date: newDate,
+      paymentDate: newDate,
       quarter: getQuarter(newDate) || f.quarter,
     }));
   }
@@ -85,10 +89,6 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
           <div>
             <label className={LABEL}>Gig Date *</label>
             <input type="date" className={INPUT} value={form.date} onChange={handleDateChange} required />
-          </div>
-          <div>
-            <label className={LABEL}>Quarter</label>
-            <input className={INPUT} value={form.quarter} onChange={set('quarter')} placeholder="e.g. Q1 2026" />
           </div>
           <div>
             <label className={LABEL}>Notes</label>
@@ -146,7 +146,11 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
         <div className="flex flex-col gap-3">
           <div>
             <label className={LABEL}>Payment Date</label>
-            <input type="date" className={INPUT} value={form.paymentDate} onChange={set('paymentDate')} />
+            <input type="date" className={INPUT} value={form.paymentDate} onChange={handlePaymentDateChange} />
+          </div>
+          <div>
+            <label className={LABEL}>Quarter</label>
+            <input className={INPUT} value={form.quarter} onChange={set('quarter')} placeholder="Auto-filled from payment date" />
           </div>
           <div>
             <label className={LABEL}>BIR 2303 Certificate Reference</label>
