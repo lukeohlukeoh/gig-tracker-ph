@@ -56,6 +56,8 @@ export default function App() {
 
   return (
     <div className="min-h-svh bg-gray-50 flex justify-center">
+      {/* White cover behind status bar / Dynamic Island */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white z-50" style={{ height: 'env(safe-area-inset-top)' }} />
       <div className="w-full max-w-[430px] min-h-svh bg-gray-50 relative flex flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
 
         {view.screen === 'dashboard' && (
@@ -108,7 +110,7 @@ export default function App() {
 
         {/* Bottom Navigation */}
         {isMain && (
-          <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 flex z-30" style={{ paddingBottom: '8px' }}>
+          <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 flex z-30" style={{ paddingBottom: '20px' }}>
             {NAV.map((n) => (
               <button
                 key={n.id}
