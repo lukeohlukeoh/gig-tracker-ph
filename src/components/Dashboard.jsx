@@ -15,7 +15,7 @@ const NEXT_ACTION = {
 
 export default function Dashboard({ gigs, onSelect, onAdd }) {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('gigDate');
+  const [sortBy, setSortBy] = useState('dateAdded');
 
   const totalGross = gigs.reduce((s, g) => s + pesoNum(g.gross), 0);
   const totalWHT = gigs.reduce((s, g) => s + wht(g.gross, g.net).amount, 0);
