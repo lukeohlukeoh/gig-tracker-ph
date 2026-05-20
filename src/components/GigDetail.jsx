@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import StagePill from './StagePill.jsx';
 import GigForm from './GigForm.jsx';
 import { peso, wht, formatDate, isFollowUpDue, daysInReceipt } from '../utils/format.js';
+import { saveAttachment, getAttachment, deleteAttachment } from '../utils/attachments.js';
 
 const STAGES = ['gig', 'po', 'receipt', 'paid'];
 const STAGE_LABELS = { gig: 'Gig Done', po: 'PO Received', receipt: 'Receipt Sent', paid: 'Paid' };
@@ -25,6 +26,51 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
   const missing2303 = gig.stage === 'paid' && !gig.ref2303;
   const followUp = isFollowUpDue(gig);
   const days = daysInReceipt(gig);
+
+  const [attachment, setAttachment] = useState(null);
+  const [attachLoading, setAttachLoading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    getAttachment(gig.id).then(setAttachment).catch(() => {});
+  }, [gig.id]);
+
+  async function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAttachLoading(true);
+    try {
+      const record = await saveAttachment(gig.id, file);
+      setAttachment(record);
+    } finally {
+      setAttachLoading(false);
+      e.target.value = '';
+    }
+  }
+
+  async function handleDeleteAttachment() {
+    if (!confirm('Remove this 2307 attachment?')) return;
+    await deleteAttachment(gig.id);
+    setAttachment(null);
+  }
+
+  function handleViewAttachment() {
+    if (!attachment) return;
+    if (attachment.type === 'application/pdf') {
+      const blob = dataURLToBlob(attachment.data);
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    }
+  }
+
+  function dataURLToBlob(dataURL) {
+    const [header, base64] = dataURL.split(',');
+    const mime = header.match(/:(.*?);/)[1];
+    const binary = atob(base64);
+    const arr = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
 
   function handleSave(data) {
     onUpdate({ ...gig, ...data });
@@ -137,6 +183,54 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
             <Field label="Actual Net Received" value={peso(gig.actualNet)} />
           </div>
         )}
+
+        {/* BIR 2307 Attachment */}
+        <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+          <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-3">BIR Form 2307</p>
+          {attachment ? (
+            <div className="flex flex-col gap-3">
+              {attachment.type.startsWith('image/') ? (
+                <img src={attachment.data} alt="BIR 2307" className="w-full rounded-xl border border-gray-100 object-contain max-h-64" />
+              ) : (
+                <button
+                  onClick={handleViewAttachment}
+                  className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-700 flex items-center justify-center gap-2 active:opacity-70"
+                >
+                  <span>📄</span> View PDF — {attachment.name}
+                </button>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex-1 py-2 rounded-xl border border-gray-200 text-xs font-semibold text-gray-500 min-h-[44px]"
+                >
+                  Replace
+                </button>
+                <button
+                  onClick={handleDeleteAttachment}
+                  className="flex-1 py-2 rounded-xl border border-red-200 text-xs font-semibold text-red-500 min-h-[44px]"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={attachLoading}
+              className="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 text-sm font-semibold text-gray-400 flex items-center justify-center gap-2 min-h-[44px] active:opacity-70"
+            >
+              {attachLoading ? 'Saving…' : '+ Attach 2307 (photo or PDF)'}
+            </button>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*,application/pdf"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
 
         {/* Actions */}
         <div className="flex flex-col gap-2 pb-4">
