@@ -77,9 +77,9 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       </div>
 
       {/* Gig list */}
-      <div className="p-4 flex flex-col gap-2 pb-32">
+      <div className={`p-4 flex flex-col gap-2 ${sorted.length > 0 ? 'pb-32' : 'pb-4'}`}>
         {sorted.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
+          <div className="flex flex-col items-center pt-6 pb-2 gap-3 text-center">
             <span className="text-5xl">🎵</span>
             <p className="text-gray-600 text-sm font-semibold">No gigs yet</p>
             <p className="text-gray-400 text-xs">Tap + to add your first gig</p>
