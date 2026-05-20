@@ -15,6 +15,7 @@ const NEXT_ACTION = {
 
 export default function Dashboard({ gigs, onSelect, onAdd }) {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('gigDate');
 
   const totalGross = gigs.reduce((s, g) => s + pesoNum(g.gross), 0);
   const totalWHT = gigs.reduce((s, g) => s + wht(g.gross, g.net).amount, 0);
@@ -24,9 +25,9 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
 
   const filtered = activeFilter === 'all' ? gigs : gigs.filter((g) => g.stage === activeFilter);
   const sorted = [...filtered].sort((a, b) => {
-    const da = new Date(a.date || a.createdAt || 0);
-    const db = new Date(b.date || b.createdAt || 0);
-    return db - da;
+    if (sortBy === 'dateAdded') return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    if (sortBy === 'poDate') return new Date(b.receiptDate || 0) - new Date(a.receiptDate || 0);
+    return new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0);
   });
 
   return (
@@ -57,6 +58,25 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
             value={followUpDue}
             sub={followUpDue > 0 ? 'overdue 30+ days' : 'all clear'}
           />
+        </div>
+
+        {/* Sort toggle */}
+        <div className="flex gap-1 mb-3">
+          {[
+            { key: 'gigDate', label: 'Gig Date' },
+            { key: 'dateAdded', label: 'Date Added' },
+            { key: 'poDate', label: 'PO Sent' },
+          ].map((s) => (
+            <button
+              key={s.key}
+              onClick={() => setSortBy(s.key)}
+              className={`flex-1 text-xs font-semibold py-1.5 rounded-lg transition-colors ${
+                sortBy === s.key ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-500'
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
         </div>
 
         {/* Stage filter tabs */}
