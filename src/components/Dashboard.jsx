@@ -34,7 +34,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       <div className="bg-white border-b border-gray-100 px-4 pt-6 pb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-gray-800 leading-tight">Gig Tracker PH</h1>
+            <h1 className="text-xl font-bold text-gray-800 leading-tight">Gig Tracker PH <span className="text-xs text-gray-400 font-normal">v4</span></h1>
             <p className="text-xs text-gray-400 mt-0.5">{gigs.length} gig{gigs.length !== 1 ? 's' : ''} total</p>
           </div>
           <button
