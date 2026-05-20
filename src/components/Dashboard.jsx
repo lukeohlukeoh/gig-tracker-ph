@@ -111,8 +111,8 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                {g.gross
-                  ? <span className="text-base font-bold text-[#1D9E75]">{peso(g.gross)}</span>
+                {g.actualNet || g.net
+                  ? <span className="text-base font-bold text-[#1D9E75]">{peso(g.actualNet || g.net)}</span>
                   : <span className="text-sm text-gray-300 font-medium">No PO yet</span>
                 }
                 <span className={`text-xs font-medium ${followUp ? 'text-orange-500' : 'text-gray-400'}`}>
