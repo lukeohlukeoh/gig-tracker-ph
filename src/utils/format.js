@@ -32,6 +32,16 @@ export function getQuarter(dateStr) {
   return `Q${q} ${d.getFullYear()}`;
 }
 
+export function daysInReceipt(gig) {
+  if (gig.stage !== 'receipt' || !gig.receiptDate) return 0;
+  const sent = new Date(gig.receiptDate + 'T00:00:00');
+  return Math.floor((Date.now() - sent.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+export function isFollowUpDue(gig) {
+  return daysInReceipt(gig) >= 30;
+}
+
 // TRAIN Law graduated annual income tax table
 export function trainTax(annualIncome) {
   const income = pesoNum(annualIncome);

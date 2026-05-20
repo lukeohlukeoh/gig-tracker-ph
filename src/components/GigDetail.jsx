@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import StagePill from './StagePill.jsx';
 import GigForm from './GigForm.jsx';
-import { peso, wht, formatDate } from '../utils/format.js';
+import { peso, wht, formatDate, isFollowUpDue, daysInReceipt } from '../utils/format.js';
 
 const STAGES = ['gig', 'po', 'receipt', 'paid'];
 const STAGE_LABELS = { gig: 'Gig Done', po: 'PO Received', receipt: 'Receipt Sent', paid: 'Paid' };
@@ -23,6 +23,8 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
   const isLast = stageIdx === STAGES.length - 1;
   const { amount: whtAmount, rate: whtRate } = wht(gig.gross, gig.net);
   const missing2303 = gig.stage === 'paid' && !gig.ref2303;
+  const followUp = isFollowUpDue(gig);
+  const days = daysInReceipt(gig);
 
   function handleSave(data) {
     onUpdate({ ...gig, ...data });
@@ -67,6 +69,13 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
         {missing2303 && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 font-medium flex items-center gap-2">
             <span>⚠️</span> Missing BIR 2303 certificate
+          </div>
+        )}
+
+        {/* Follow-up reminder */}
+        {followUp && (
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-sm text-orange-700 font-medium flex items-center gap-2">
+            <span>📬</span> No payment after {days} days — time to follow up
           </div>
         )}
 
