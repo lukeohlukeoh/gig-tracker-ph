@@ -89,8 +89,8 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
             <input className={INPUT} value={form.client} onChange={set('client')} required placeholder="e.g. ABC Corporation" />
           </div>
           <div>
-            <label className={LABEL}>Venue *</label>
-            <input className={INPUT} value={form.venue} onChange={set('venue')} required placeholder="e.g. Makati Shangri-La" />
+            <label className={LABEL}>Venue/Gig *</label>
+            <input className={INPUT} value={form.venue} onChange={set('venue')} required placeholder="e.g. SM Aura Corporate Event" />
           </div>
           <div>
             <label className={LABEL}>Gig Date *</label>

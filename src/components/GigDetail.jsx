@@ -104,8 +104,8 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
       <div className="flex items-center gap-3 p-4 border-b border-gray-100">
         <button onClick={onBack} className="text-gray-400 hover:text-gray-600 text-xl leading-none min-w-[44px] min-h-[44px] flex items-center">←</button>
         <div className="flex-1 min-w-0">
-          <h2 className="text-base font-bold text-gray-800 truncate">{gig.client}</h2>
-          <p className="text-xs text-gray-500 truncate">{gig.venue} · {formatDate(gig.date)}</p>
+          <h2 className="text-base font-bold text-gray-800 truncate">{gig.venue || gig.client}</h2>
+          <p className="text-xs text-gray-500 truncate">{gig.client} · {formatDate(gig.date)}</p>
         </div>
         <StagePill stage={gig.stage} />
       </div>
@@ -144,7 +144,7 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
         <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
           <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2">Details</p>
           <Field label="Client" value={gig.client} />
-          <Field label="Venue" value={gig.venue} />
+          <Field label="Venue/Gig" value={gig.venue} />
           <Field label="Gig Date" value={formatDate(gig.date)} />
           <Field label="Quarter" value={gig.quarter} />
           <Field label="Notes" value={gig.notes} />

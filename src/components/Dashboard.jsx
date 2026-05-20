@@ -119,9 +119,9 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-gray-800 truncate">{g.client || 'Unnamed Client'}</p>
+                  <p className="text-sm font-bold text-gray-800 truncate">{g.venue || 'Unnamed Gig'}</p>
                   <p className="text-xs text-gray-400 truncate mt-0.5">
-                    {[g.venue, g.date ? formatDate(g.date) : null].filter(Boolean).join(' · ')}
+                    {[g.client, g.date ? formatDate(g.date) : null].filter(Boolean).join(' · ')}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
