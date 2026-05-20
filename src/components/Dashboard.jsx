@@ -29,7 +29,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
   });
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-4 pt-6 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -77,7 +77,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       </div>
 
       {/* Gig list */}
-      <div className="flex-1 p-4 flex flex-col gap-2 pb-32">
+      <div className="p-4 flex flex-col gap-2 pb-32">
         {sorted.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
             <span className="text-5xl">🎵</span>
