@@ -113,7 +113,7 @@ export default function App() {
               <button
                 key={n.id}
                 onClick={() => setView({ screen: n.id })}
-                className={`flex-1 flex flex-col items-center gap-1 pt-2 pb-1 transition-colors ${
+                className={`flex-1 flex flex-col items-center gap-1 pt-2 pb-0 transition-colors ${
                   view.screen === n.id ? 'text-[#1D9E75]' : 'text-gray-400'
                 }`}
               >
