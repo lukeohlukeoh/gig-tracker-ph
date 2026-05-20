@@ -123,7 +123,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
       <button
         onClick={onAdd}
         className="fixed right-6 w-14 h-14 rounded-full bg-[#1D9E75] text-white text-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-20"
-        style={{ bottom: 'calc(env(safe-area-inset-bottom) + 80px)' }}
+        style={{ bottom: '64px' }}
         aria-label="Add gig"
       >
         +
