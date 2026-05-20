@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gig-tracker-ph-v2';
+const CACHE_NAME = 'gig-tracker-ph-v3';
 const BASE = '/gig-tracker-ph';
 const ASSETS = [
   BASE + '/',
