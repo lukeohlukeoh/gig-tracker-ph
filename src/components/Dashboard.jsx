@@ -113,6 +113,11 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
           const missing = g.stage === 'paid' && !g.ref2307;
           const followUp = isFollowUpDue(g);
           const days = daysInReceipt(g);
+          const cardDate =
+            sortBy === 'paidDate' ? (g.paymentDate ? formatDate(g.paymentDate) : 'No payment date') :
+            sortBy === 'poDate'   ? (g.receiptDate ? formatDate(g.receiptDate) : 'No receipt date') :
+            sortBy === 'dateAdded'? (g.createdAt ? formatDate(g.createdAt) : null) :
+            (g.date ? formatDate(g.date) : null);
           return (
             <button
               key={g.id}
@@ -129,7 +134,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-gray-800 truncate">{g.venue || 'Unnamed Gig'}</p>
                   <p className="text-xs text-gray-400 truncate mt-0.5">
-                    {[g.client, g.date ? formatDate(g.date) : null].filter(Boolean).join(' · ')}
+                    {[g.client, cardDate].filter(Boolean).join(' · ')}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
