@@ -17,13 +17,13 @@ function Field({ label, value }) {
   );
 }
 
-export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
+export default function GigDetail({ gig, allGigs, onUpdate, onDelete, onBack }) {
   const [mode, setMode] = useState('view'); // 'view' | 'advance' | 'edit'
 
   const stageIdx = STAGES.indexOf(gig.stage);
   const isLast = stageIdx === STAGES.length - 1;
   const { amount: whtAmount, rate: whtRate } = wht(gig.gross, gig.net);
-  const missing2303 = gig.stage === 'paid' && !gig.ref2303;
+  const missing2307 = gig.stage === 'paid' && !gig.ref2307;
   const followUp = isFollowUpDue(gig);
   const days = daysInReceipt(gig);
 
@@ -92,6 +92,7 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
             onSave={handleSave}
             onCancel={() => setMode('view')}
             advanceFrom={mode === 'advance' ? gig.stage : null}
+            allGigs={allGigs}
           />
         </div>
       </div>
@@ -111,10 +112,10 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {/* Missing 2303 warning */}
-        {missing2303 && (
+        {/* Missing 2307 warning */}
+        {missing2307 && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 font-medium flex items-center gap-2">
-            <span>⚠️</span> Missing BIR 2303 certificate
+            <span>⚠️</span> Missing BIR 2307 certificate
           </div>
         )}
 
@@ -175,11 +176,11 @@ export default function GigDetail({ gig, onUpdate, onDelete, onBack }) {
         )}
 
         {/* Payment */}
-        {(gig.paymentDate || gig.ref2303 || gig.actualNet) && (
+        {(gig.paymentDate || gig.ref2307 || gig.actualNet) && (
           <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
             <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2">Payment</p>
             <Field label="Payment Date" value={formatDate(gig.paymentDate)} />
-            <Field label="BIR 2303 Ref" value={gig.ref2303} />
+            <Field label="BIR 2307 Ref" value={gig.ref2307} />
             <Field label="Actual Net Received" value={peso(gig.actualNet)} />
           </div>
         )}

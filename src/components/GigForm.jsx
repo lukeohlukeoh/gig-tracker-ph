@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { wht, peso, getQuarter } from '../utils/format.js';
+import { loadGigs } from '../utils/storage.js';
 
 const STAGES = ['gig', 'po', 'receipt', 'paid'];
 const STAGE_LABELS = { gig: 'Gig Done', po: 'PO Received', receipt: 'Receipt Sent', paid: 'Paid' };
@@ -7,7 +8,7 @@ const STAGE_LABELS = { gig: 'Gig Done', po: 'PO Received', receipt: 'Receipt Sen
 const INPUT = 'w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1D9E75] bg-white min-h-[44px]';
 const LABEL = 'block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide';
 
-export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom }) {
+export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom, allGigs }) {
   const startStage = advanceFrom
     ? STAGES[Math.min(STAGES.indexOf(advanceFrom) + 1, STAGES.length - 1)]
     : (initial.stage || 'gig');
@@ -26,7 +27,7 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
     receiptNumber: initial.receiptNumber || '',
     receiptDate: initial.receiptDate || '',
     paymentDate: initial.paymentDate || '',
-    ref2303: initial.ref2303 || '',
+    ref2307: initial.ref2307 || '',
     actualNet: initial.actualNet || '',
   });
 
@@ -47,8 +48,24 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
 
   const { amount: whtAmount, rate: whtRate } = wht(form.gross, form.net);
 
+  const [ref2307Warning, setRef2307Warning] = useState(null); // null | 'duplicate'
+
+  function handleRef2307Change(e) {
+    const val = e.target.value;
+    setForm((f) => ({ ...f, ref2307: val }));
+    if (val.trim()) {
+      const gigs = allGigs || loadGigs();
+      const duplicate = gigs.find(
+        (g) => g.ref2307 && g.ref2307.trim() === val.trim() && g.id !== initial.id
+      );
+      setRef2307Warning(duplicate ? 'duplicate' : null);
+    } else {
+      setRef2307Warning(null);
+    }
+  }
+
   function detectStage(f) {
-    if (f.paymentDate || f.ref2303 || f.actualNet) return 'paid';
+    if (f.paymentDate || f.ref2307 || f.actualNet) return 'paid';
     if (f.receiptNumber || f.receiptDate) return 'receipt';
     if (f.poNumber || f.gross || f.net) return 'po';
     return 'gig';
@@ -159,8 +176,29 @@ export default function GigForm({ initial = {}, onSave, onCancel, advanceFrom })
             <input className={INPUT} value={form.quarter} onChange={set('quarter')} placeholder="Auto-filled from payment date" />
           </div>
           <div>
-            <label className={LABEL}>BIR 2303 Certificate Reference</label>
-            <input className={INPUT} value={form.ref2303} onChange={set('ref2303')} placeholder="e.g. 2303-2025-00123" />
+            <label className={LABEL}>BIR 2307 Reference Number</label>
+            <input className={INPUT} value={form.ref2307} onChange={handleRef2307Change} placeholder="e.g. 2307-2025-00123" />
+            {ref2307Warning === 'duplicate' && (
+              <div className="mt-2 bg-orange-50 border border-orange-200 rounded-xl p-3 flex flex-col gap-2">
+                <p className="text-xs font-semibold text-orange-700">This 2307 number is already used by another gig.</p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setForm((f) => ({ ...f, ref2307: '' })); setRef2307Warning(null); }}
+                    className="flex-1 py-2 rounded-lg border border-orange-300 text-xs font-bold text-orange-600"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRef2307Warning(null)}
+                    className="flex-1 py-2 rounded-lg bg-orange-500 text-xs font-bold text-white"
+                  >
+                    I know
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <label className={LABEL}>Actual Net Received (₱)</label>

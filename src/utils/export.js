@@ -29,7 +29,7 @@ export function exportToExcel(gigs) {
       'Receipt No.': g.receiptNumber || '',
       'Receipt Date': g.receiptDate || '',
       'Payment Date': g.paymentDate || '',
-      '2303 Ref': g.ref2303 || '',
+      '2307 Ref': g.ref2307 || '',
       'Actual Net (₱)': pesoNum(g.actualNet) || '',
       'Stage': STAGE_LABELS[g.stage] || g.stage,
     };

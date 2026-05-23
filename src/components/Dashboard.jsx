@@ -20,7 +20,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
   const totalGross = gigs.reduce((s, g) => s + pesoNum(g.gross), 0);
   const totalWHT = gigs.reduce((s, g) => s + wht(g.gross, g.net).amount, 0);
   const activeGigs = gigs.filter((g) => g.stage !== 'paid').length;
-  const missing2303 = gigs.filter((g) => g.stage === 'paid' && !g.ref2303).length;
+  const missing2307 = gigs.filter((g) => g.stage === 'paid' && !g.ref2307).length;
   const followUpDue = gigs.filter(isFollowUpDue).length;
 
   const filtered = activeFilter === 'all' ? gigs : gigs.filter((g) => g.stage === activeFilter);
@@ -108,7 +108,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
           </div>
         )}
         {sorted.map((g) => {
-          const missing = g.stage === 'paid' && !g.ref2303;
+          const missing = g.stage === 'paid' && !g.ref2307;
           const followUp = isFollowUpDue(g);
           const days = daysInReceipt(g);
           return (
@@ -126,7 +126,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
                 </div>
                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
                   <StagePill stage={g.stage} />
-                  {missing && <span className="text-[10px] text-red-500 font-semibold">⚠ No 2303</span>}
+                  {missing && <span className="text-[10px] text-red-500 font-semibold">⚠ No 2307</span>}
                   {followUp && <span className="text-[10px] text-orange-500 font-semibold">⚠ Follow up</span>}
                 </div>
               </div>

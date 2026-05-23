@@ -60,7 +60,7 @@ export default function BIRSummary({ gigs }) {
 
   // Paid gigs for selected quarter
   const paidGigs = gigs.filter((g) => g.stage === 'paid' && gigQuarter(g) === selectedQuarterStr);
-  const missing2303 = paidGigs.filter((g) => !g.ref2303).length;
+  const missing2307 = paidGigs.filter((g) => !g.ref2307).length;
 
   // 2551Q
   const grossSum = paidGigs.reduce((s, g) => s + pesoNum(g.gross), 0);
@@ -174,10 +174,10 @@ export default function BIRSummary({ gigs }) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 pb-24">
-        {/* Missing 2303 warning */}
-        {missing2303 > 0 && (
+        {/* Missing 2307 warning */}
+        {missing2307 > 0 && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 font-medium">
-            ⚠️ {missing2303} gig{missing2303 !== 1 ? 's' : ''} have no 2303 on file — CWT may be understated.
+            ⚠️ {missing2307} gig{missing2307 !== 1 ? 's' : ''} have no 2307 on file — CWT may be understated.
           </div>
         )}
 

@@ -82,6 +82,7 @@ export default function App() {
         {view.screen === 'detail' && selectedGig && (
           <GigDetail
             gig={selectedGig}
+            allGigs={gigs}
             onUpdate={handleUpdate}
             onDelete={handleDelete}
             onBack={() => setView({ screen: view.from || 'dashboard' })}
@@ -103,6 +104,7 @@ export default function App() {
               <GigForm
                 onSave={handleAdd}
                 onCancel={() => setView({ screen: 'dashboard' })}
+                allGigs={gigs}
               />
             </div>
           </div>
