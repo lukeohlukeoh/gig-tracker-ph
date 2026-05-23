@@ -27,6 +27,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
   const sorted = [...filtered].sort((a, b) => {
     if (sortBy === 'dateAdded') return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
     if (sortBy === 'poDate') return new Date(b.receiptDate || 0) - new Date(a.receiptDate || 0);
+    if (sortBy === 'paidDate') return new Date(b.paymentDate || 0) - new Date(a.paymentDate || 0);
     return new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0);
   });
 
@@ -66,6 +67,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
             { key: 'gigDate', label: 'Gig Date' },
             { key: 'dateAdded', label: 'Date Added' },
             { key: 'poDate', label: 'PO Sent' },
+            { key: 'paidDate', label: 'Paid Date' },
           ].map((s) => (
             <button
               key={s.key}
@@ -115,7 +117,13 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
             <button
               key={g.id}
               onClick={() => onSelect(g.id)}
-              className={`w-full text-left bg-white rounded-2xl border p-4 shadow-sm active:opacity-75 flex flex-col gap-2 ${followUp ? 'border-orange-300' : 'border-gray-100'}`}
+              className={`w-full text-left rounded-2xl border p-4 shadow-sm active:opacity-75 flex flex-col gap-2 ${
+                g.stage === 'paid'
+                  ? 'bg-[#1D9E75]/8 border-[#1D9E75]/30'
+                  : followUp
+                  ? 'bg-white border-orange-300'
+                  : 'bg-white border-gray-100'
+              }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
@@ -131,10 +139,15 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                {g.actualNet || g.net
-                  ? <span className="text-base font-bold text-[#1D9E75]">{peso(g.actualNet || g.net)}</span>
-                  : <span className="text-sm text-gray-300 font-medium">No PO yet</span>
-                }
+                <div className="flex flex-col">
+                  {g.actualNet || g.net
+                    ? <span className="text-base font-bold text-[#1D9E75]">{peso(g.actualNet || g.net)}</span>
+                    : <span className="text-sm text-gray-300 font-medium">No PO yet</span>
+                  }
+                  {g.gross && (
+                    <span className="text-xs text-gray-400 font-medium">{peso(g.gross)} gross</span>
+                  )}
+                </div>
                 <span className={`text-xs font-medium ${followUp ? 'text-orange-500' : 'text-gray-400'}`}>
                   {followUp ? `${days}d since receipt` : NEXT_ACTION[g.stage]}
                 </span>
