@@ -41,8 +41,8 @@ function GigRow({ g, onSelect }) {
       className="w-full text-left px-4 py-3 flex items-center gap-3 border-t border-gray-50 active:bg-gray-50"
     >
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold text-gray-700 truncate">{g.client || 'Unnamed'}</p>
-        <p className="text-[10px] text-gray-400 truncate">{formatDate(g.date)}</p>
+        <p className="text-xs font-bold text-gray-700 truncate">{g.venue || g.client || 'Unnamed'}</p>
+        <p className="text-[10px] text-gray-400 truncate">{[g.client, formatDate(g.date)].filter(Boolean).join(' · ')}</p>
       </div>
       <StagePill stage={g.stage} />
       {g.gross && (
