@@ -143,6 +143,18 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
                   {followUp && <span className="text-[10px] text-orange-500 font-semibold">⚠ Follow up</span>}
                 </div>
               </div>
+              <div className="flex gap-4">
+                {[
+                  { label: 'Gig', value: g.date ? formatDate(g.date) : null },
+                  { label: 'Receipt', value: g.receiptDate ? formatDate(g.receiptDate) : null },
+                  { label: 'Paid', value: g.paymentDate ? formatDate(g.paymentDate) : null },
+                ].map(({ label, value }) => (
+                  <div key={label} className="flex flex-col">
+                    <span className="text-[9px] font-semibold text-gray-400 uppercase">{label}</span>
+                    <span className={`text-[10px] font-semibold ${value ? 'text-gray-600' : 'text-gray-300'}`}>{value || '—'}</span>
+                  </div>
+                ))}
+              </div>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                   {g.actualNet || g.net
