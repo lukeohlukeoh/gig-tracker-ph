@@ -34,20 +34,38 @@ function QuarterStats({ gigs }) {
   );
 }
 
+function DateChip({ label, value }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-[9px] font-semibold text-gray-400 uppercase">{label}</span>
+      <span className={`text-[10px] font-semibold ${value ? 'text-gray-600' : 'text-gray-300'}`}>
+        {value || '—'}
+      </span>
+    </div>
+  );
+}
+
 function GigRow({ g, onSelect }) {
   return (
     <button
       onClick={() => onSelect(g.id)}
-      className="w-full text-left px-4 py-3 flex items-center gap-3 border-t border-gray-50 active:bg-gray-50"
+      className="w-full text-left px-4 py-3 flex flex-col gap-2 border-t border-gray-50 active:bg-gray-50"
     >
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold text-gray-700 truncate">{g.venue || g.client || 'Unnamed'}</p>
-        <p className="text-[10px] text-gray-400 truncate">{[g.client, formatDate(g.date)].filter(Boolean).join(' · ')}</p>
+      <div className="flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-gray-700 truncate">{g.venue || g.client || 'Unnamed'}</p>
+          <p className="text-[10px] text-gray-400 truncate">{g.client}</p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {g.gross && <span className="text-xs font-bold text-[#1D9E75]">{peso(g.gross)}</span>}
+          <StagePill stage={g.stage} />
+        </div>
       </div>
-      <StagePill stage={g.stage} />
-      {g.gross && (
-        <span className="text-xs font-bold text-[#1D9E75] flex-shrink-0">{peso(g.gross)}</span>
-      )}
+      <div className="flex gap-4">
+        <DateChip label="Gig" value={formatDate(g.date)} />
+        <DateChip label="Receipt" value={formatDate(g.receiptDate)} />
+        <DateChip label="Paid" value={formatDate(g.paymentDate)} />
+      </div>
     </button>
   );
 }
