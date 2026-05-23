@@ -110,6 +110,8 @@ export default function QuarterView({ gigs, onSelect }) {
   const [mode, setMode] = useState('quarter');
   const [expanded, setExpanded] = useState({});
 
+  gigs = gigs.filter((g) => g.stage === 'paid' && g.ref2307);
+
   function toggle(key) {
     setExpanded((e) => ({ ...e, [key]: !e[key] }));
   }
