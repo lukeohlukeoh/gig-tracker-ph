@@ -118,7 +118,7 @@ export default function Dashboard({ gigs, onSelect, onAdd }) {
               key={g.id}
               onClick={() => onSelect(g.id)}
               className={`w-full text-left rounded-2xl border p-4 shadow-sm active:opacity-75 flex flex-col gap-2 ${
-                g.stage === 'paid'
+                g.stage === 'paid' && g.ref2307
                   ? 'bg-[#1D9E75]/8 border-[#1D9E75]/30'
                   : followUp
                   ? 'bg-white border-orange-300'
